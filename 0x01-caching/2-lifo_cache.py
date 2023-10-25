@@ -5,7 +5,7 @@ LIFO module
 from base_caching import BaseCaching
 
 
-class LIFOCaching(BaseCaching):
+class LIFOCache(BaseCaching):
     """
     storing, retrieving data in cache. remove data from cache when
     memory is full
