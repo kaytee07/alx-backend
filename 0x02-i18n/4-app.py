@@ -1,53 +1,48 @@
 #!/usr/bin/env python3
-"""A simple flask app
 """
-
-
-from flask import Flask, render_template, request
+A Basic flask application
+"""
+from flask import Flask
+from flask import request
+from flask import render_template
 from flask_babel import Babel
 
 
 class Config(object):
-    """_summary_
-
-    Returns:
-            _type_: _description_
+    """
+    Application configuration class
     """
     LANGUAGES = ['en', 'fr']
     BABEL_DEFAULT_LOCALE = 'en'
     BABEL_DEFAULT_TIMEZONE = 'UTC'
 
 
-# configure the flask app
+# Instantiate the application object
 app = Flask(__name__)
 app.config.from_object(Config)
-app.url_map.strict_slashes = False
+
+# Wrap the application with Babel
 babel = Babel(app)
 
 
 @babel.localeselector
-def get_locale():
-    """_summary_
-
-    Returns:
-            _type_: _description_
+def get_locale() -> str:
     """
-    locale = request.args.get('locale')
-    if locale in app.config['LANGUAGES']:
-        print(locale)
+    Gets locale from request object
+    """
+    locale = request.args.get('locale', '').strip()
+    if locale and locale in Config.LANGUAGES:
         return locale
-
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
-# babel.init_app(app, locale_selector=get_locale)
 
-
-@app.route('/')
-def index():
-    """_summary
+@app.route('/', strict_slashes=False)
+def index() -> str:
+    """
+    Renders a basic html template
     """
     return render_template('4-index.html')
 
 
 if __name__ == '__main__':
-    app.run(port="5000", host="0.0.0.0", debug=True)
+    app.run()
