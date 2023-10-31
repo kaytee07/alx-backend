@@ -7,7 +7,6 @@ from flask_babel import Babel
 
 app = Flask(__name__)
 babel = Babel(app)
-app.config.from_object(Config)
 
 
 class Config():
@@ -17,6 +16,8 @@ class Config():
     LANGUAGES = ["en", "fr"]
     BABEL_DEFAULT_LOCALE = "en"
     BABEL_TIMEZONE = "UTC"
+
+app.config.from_object(Config)
 
 
 @app.route('/', strict_slashes=False)
